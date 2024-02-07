@@ -33,7 +33,7 @@ Before getting started, ensure you have the following tools installed:
 - [eksctl](https://eksctl.io/)
 
 ## Project Structure
-![Alt 3-tier](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.zirous.com%2F2022%2F11%2F15%2Fthree-tier-architecture-approach-for-custom-applications-2%2F&psig=AOvVaw1aYGCJ4HCigS9F3KtKz3lE&ust=1707362234579000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCLjjiY6imIQDFQAAAAAdAAAAABAE)
+![Alt 3-tier](/readme-images/3-tier.png)
 
 **frontend/:** Contains the frontend application code and Dockerfile.
 
