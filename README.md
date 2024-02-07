@@ -7,9 +7,9 @@ This repo will focus on the deployment of the application not the code itself.
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [Deployment](#deployment)
+- [Frontend docker-file](#Frontend-docker-file)
+- [Backend docker-file](#Backend-docker-file)
 - [Monitoring](#monitoring)
 - [Contributing](#contributing)
 - [License](#license)
