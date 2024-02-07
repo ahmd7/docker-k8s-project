@@ -33,7 +33,7 @@ Before getting started, ensure you have the following tools installed:
 - [eksctl](https://eksctl.io/)
 
 ## Project Structure
-![Alt 3-tier](readme-images/3-tier.png)
+![Alt 3-tier](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.zirous.com%2F2022%2F11%2F15%2Fthree-tier-architecture-approach-for-custom-applications-2%2F&psig=AOvVaw1aYGCJ4HCigS9F3KtKz3lE&ust=1707362234579000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCLjjiY6imIQDFQAAAAAdAAAAABAE)
 
 **frontend/:** Contains the frontend application code and Dockerfile.
 
@@ -41,6 +41,58 @@ Before getting started, ensure you have the following tools installed:
 
 **k8s/:** Kubernetes deployment files for each tier.
 
+## Frontend docker-file
+
+This Dockerfile is used to build a Docker image for a **Node.js** application. Let's break down each instruction: 
+```dockerfile
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]
+```
+**FROM node:18:** Uses Node.js 18 as the base image.
+
+**WORKDIR /app:** Sets the working directory inside the container to /app.
+
+**COPY package.json . :** Copies package files for efficient dependency installation.
+
+**RUN npm install:** Installs Node.js application dependencies.
+
+**COPY . .:** Copies the application code into the container.
+
+**EXPOSE 3000:** Documents that the application uses port 3000.
+
+**CMD ["npm", "run", "start"]:** Sets the default command to start the Node.js application.
+
+## Backend docker-file
+This Dockerfile is used to build a Docker image for a **Node.js** application. Which is same as the frontend:
+
+```dockerfile
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8080
+
+CMD [ "node", "RUN" , "index.js" ]
+
+```
+##k
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
