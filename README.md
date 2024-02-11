@@ -135,8 +135,8 @@ This Kubernetes Ingress YAML file configures an Application Load Balancer (ALB) 
 1. **`k8s_manifests/mongo/secrets.yaml`**
   This Kubernetes Secret YAML file defines a secret named mongo-sec within the workshop namespace. It is of type Opaque, indicating generic, arbitrary data. This secret contains sensitive information, specifically:
 
-    **Username:** The Base64-encoded value for 'admin'.
-    **Password:** The Base64-encoded value for 'password123'.
+    - **Username:** The Base64-encoded value for 'admin'.
+    - **Password:** The Base64-encoded value for 'password123'.
     This secret is intended for use with other Kubernetes resources, such as Deployments, allowing secure storage and retrieval of sensitive data, in this case, MongoDB root username and password. The values can be decoded from Base64 when needed.
 1. **`k8s_manifests/mongo/service.yaml`**
 This Kubernetes Service YAML file defines a service named mongodb-svc within the workshop namespace. It exposes a MongoDB instance to other services within the cluster. Key configurations include:
