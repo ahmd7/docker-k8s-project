@@ -116,7 +116,7 @@ This Kubernetes Ingress YAML file configures an Application Load Balancer (ALB) 
  1. **`k8s_manifests/mongo/deploy.yaml`**
   This Kubernetes Deployment YAML file configures the deployment of a MongoDB instance within the workshop namespace. It orchestrates a single replica of a containerized MongoDB using the official `mongo:4.4.6` image. Key configurations include:
 
- **Container Configuration:**
+     **Container Configuration:**
 
   - Image: `MongoDB version 4.4.6.`
     Command: Utilizes numactl for memory management and sets MongoDB parameters.
@@ -141,9 +141,9 @@ This Kubernetes Ingress YAML file configures an Application Load Balancer (ALB) 
 1. **`k8s_manifests/mongo/service.yaml`**
 This Kubernetes Service YAML file defines a service named mongodb-svc within the workshop namespace. It exposes a MongoDB instance to other services within the cluster. Key configurations include:
 
-    -Selector: Identifies pods to include in the service using the label app: mongodb.
-    -Ports: Maps port 27017 on the service to the same port on the target pods. The service is accessible internally within the cluster on this port.
-    -This service allows other components in the same namespace to connect to the MongoDB instance using the service name (`mongodb-svc`) and port (`27017`). It facilitates communication between different parts of the application stack.
+    - Selector: Identifies pods to include in the service using the label app: mongodb.
+    - Ports: Maps port 27017 on the service to the same port on the target pods. The service is accessible internally within the cluster on this port.
+    - This service allows other components in the same namespace to connect to the MongoDB instance using the service name (`mongodb-svc`) and port (`27017`). It facilitates communication between different parts of the application stack.
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
