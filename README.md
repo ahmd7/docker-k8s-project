@@ -135,15 +135,15 @@ kubectl apply -f mongodb-deployment.yaml.
 1. **`k8s_manifests/mongo/secrets.yaml`**
   This Kubernetes Secret YAML file defines a secret named mongo-sec within the workshop namespace. It is of type Opaque, indicating generic, arbitrary data. This secret contains sensitive information, specifically:
 
- **Username: **The Base64-encoded value for 'admin'.
-**Password:** The Base64-encoded value for 'password123'.
-This secret is intended for use with other Kubernetes resources, such as Deployments, allowing secure storage and retrieval of sensitive data, in this case, MongoDB root username and password. The values can be decoded from Base64 when needed.
+    **Username:** The Base64-encoded value for 'admin'.
+    **Password:** The Base64-encoded value for 'password123'.
+    This secret is intended for use with other Kubernetes resources, such as Deployments, allowing secure storage and retrieval of sensitive data, in this case, MongoDB root username and password. The values can be decoded from Base64 when needed.
 1. **`k8s_manifests/mongo/service.yaml`**
 This Kubernetes Service YAML file defines a service named mongodb-svc within the workshop namespace. It exposes a MongoDB instance to other services within the cluster. Key configurations include:
 
   **Selector:** Identifies pods to include in the service using the label app: mongodb.
-Ports: Maps port 27017 on the service to the same port on the target pods. The service is accessible internally within the cluster on this port.
-This service allows other components in the same namespace to connect to the MongoDB instance using the service name (`mongodb-svc`) and port (`27017`). It facilitates communication between different parts of the application stack.
+    Ports: Maps port 27017 on the service to the same port on the target pods. The service is accessible internally within the cluster on this port.
+    This service allows other components in the same namespace to connect to the MongoDB instance using the service name (`mongodb-svc`) and port (`27017`). It facilitates communication between different parts of the application stack.
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
