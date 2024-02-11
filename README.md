@@ -112,28 +112,28 @@ This Kubernetes Ingress YAML file configures an Application Load Balancer (ALB) 
 
  Requests to /backend are directed to the backend service on port 8080.
 Requests to the root path / are directed to the frontend service on port 3000.
-Annotations provide additional configuration details, specifying the ALB's scheme, target type, and listen ports. The Ingress is associated with the alb Ingress class. This configuration enables external access and load balancing for the backend and frontend services.
+ Annotations provide additional configuration details, specifying the ALB's scheme, target type, and listen ports. The Ingress is associated with the alb Ingress class. This configuration enables external access and load balancing for the backend and frontend services.
  1. **`k8s_manifests/mongo/deploy.yaml`**
-This Kubernetes Deployment YAML file configures the deployment of a MongoDB instance within the workshop namespace. It orchestrates a single replica of a containerized MongoDB using the official `mongo:4.4.6` image. Key configurations include:
+  This Kubernetes Deployment YAML file configures the deployment of a MongoDB instance within the workshop namespace. It orchestrates a single replica of a containerized MongoDB using the official `mongo:4.4.6` image. Key configurations include:
 
  **Container Configuration:**
 
- - Image: `MongoDB version 4.4.6.`
+  - Image: `MongoDB version 4.4.6.`
 Command: Utilizes numactl for memory management and sets MongoDB parameters.
 Ports: Exposes port 27017 for MongoDB connections.
 Resource Limits: Specifies resource requests and limits for memory and CPU usage.
 Environment Variables: Retrieves MongoDB root username and password from a Kubernetes Secret (`mongo-sec`).
 Replicas: Ensures a single MongoDB replica.
 
-- Storage Configuration (commented out): Volume-related configurations (persistent volume claims and mounts) are currently commented out. Uncommenting these sections would enable persistent storage for MongoDB data.
+  - Storage Configuration (commented out): Volume-related configurations (persistent volume claims and mounts) are currently commented out. Uncommenting these sections would enable persistent storage for MongoDB data.
 
-- This Deployment is designed for MongoDB deployment with resource constraints and can be applied to a Kubernetes cluster using
+  - This Deployment is designed for MongoDB deployment with resource constraints and can be applied to a Kubernetes cluster using
 ```bash
 kubectl apply -f mongodb-deployment.yaml.
 ```
 
 1. **`k8s_manifests/mongo/secrets.yaml`**
-This Kubernetes Secret YAML file defines a secret named mongo-sec within the workshop namespace. It is of type Opaque, indicating generic, arbitrary data. This secret contains sensitive information, specifically:
+  This Kubernetes Secret YAML file defines a secret named mongo-sec within the workshop namespace. It is of type Opaque, indicating generic, arbitrary data. This secret contains sensitive information, specifically:
 
  **Username: **The Base64-encoded value for 'admin'.
 **Password:** The Base64-encoded value for 'password123'.
