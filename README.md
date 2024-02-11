@@ -141,7 +141,7 @@ This secret is intended for use with other Kubernetes resources, such as Deploym
 1. **`k8s_manifests/mongo/service.yaml`**
 This Kubernetes Service YAML file defines a service named mongodb-svc within the workshop namespace. It exposes a MongoDB instance to other services within the cluster. Key configurations include:
 
- **Selector:** Identifies pods to include in the service using the label app: mongodb.
+  **Selector:** Identifies pods to include in the service using the label app: mongodb.
 Ports: Maps port 27017 on the service to the same port on the target pods. The service is accessible internally within the cluster on this port.
 This service allows other components in the same namespace to connect to the MongoDB instance using the service name (`mongodb-svc`) and port (`27017`). It facilitates communication between different parts of the application stack.
 ## Contributing
