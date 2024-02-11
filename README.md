@@ -110,9 +110,9 @@ This Kubernetes Service YAML file defines a service named frontend within the wo
  5. **`k8s_manifests/full_stack_lb.yaml`**
 This Kubernetes Ingress YAML file configures an Application Load Balancer (ALB) named mainlb within the workshop namespace. It defines rules for routing external HTTP traffic to services based on specified paths:
 
- Requests to /backend are directed to the backend service on port 8080.
-Requests to the root path / are directed to the frontend service on port 3000.
- Annotations provide additional configuration details, specifying the ALB's scheme, target type, and listen ports. The Ingress is associated with the alb Ingress class. This configuration enables external access and load balancing for the backend and frontend services.
+    Requests to /backend are directed to the backend service on port 8080.
+    Requests to the root path / are directed to the frontend service on port 3000.
+    Annotations provide additional configuration details, specifying the ALB's scheme, target type, and listen ports. The Ingress is associated with the alb Ingress class. This configuration enables external access and load balancing for the backend and frontend services.
  1. **`k8s_manifests/mongo/deploy.yaml`**
   This Kubernetes Deployment YAML file configures the deployment of a MongoDB instance within the workshop namespace. It orchestrates a single replica of a containerized MongoDB using the official `mongo:4.4.6` image. Key configurations include:
 
