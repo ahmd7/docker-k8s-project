@@ -218,7 +218,7 @@ git clone https://github.com/ahmd7/docker-k8s-project.git
     docker run -d -p 3000:3000 <image-name>:latest
     Access your application at public-ip:3000.
     ```
-#### Step 3: Setup Backend
+    #### Step 3: Setup Backend
     
     Navigate to the backend directory in the terminal.
 
