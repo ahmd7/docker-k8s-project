@@ -226,13 +226,13 @@ git clone https://github.com/ahmd7/docker-k8s-project.git
 
     Run the following commands in your terminal to build the backend image and push it to the ECR repository:
 
-```bash
-aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/l0l7e4u1
-docker build -t 3-tier-backend .
-docker tag 3-tier-backend:latest public.ecr.aws/l0l7e4u1/3-tier-backend:latest
-docker push public.ecr.aws/l0l7e4u1/3-tier-backend:latest
-```
-Your backend image is now successfully built and pushed to the Elastic Container Registry, which will be utilized when setting up the Elastic Kubernetes Service.
+    ```bash
+    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/l0l7e4u1
+    docker build -t 3-tier-backend .
+    docker tag 3-tier-backend:latest public.ecr.aws/l0l7e4u1/3-tier-backend:latest
+    docker push public.ecr.aws/l0l7e4u1/3-tier-backend:latest
+    ```
+    Your backend image is now successfully built and pushed to the Elastic Container Registry, which will be utilized when setting up the Elastic Kubernetes Service.
 
 
 
