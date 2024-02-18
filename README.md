@@ -11,7 +11,7 @@ This repo will focus on the deployment of the application not the code itself.
 - [Frontend docker-file](#Frontend-docker-file)
 - [Backend docker-file](#Backend-docker-file)
 - [Kubernetes manifests](#kubernetes-manifests)
-- [Monitoring](#monitoring)
+- [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -110,40 +110,135 @@ This Kubernetes Service YAML file defines a service named frontend within the wo
  5. **`k8s_manifests/full_stack_lb.yaml`**
 This Kubernetes Ingress YAML file configures an Application Load Balancer (ALB) named mainlb within the workshop namespace. It defines rules for routing external HTTP traffic to services based on specified paths:
 
-    - Requests to /backend are directed to the backend service on port 8080.
-    - Requests to the root path / are directed to the frontend service on port 3000.
-    - Annotations provide additional configuration details, specifying the ALB's scheme, target type, and listen ports. The Ingress is associated with the alb Ingress class. This configuration enables external access and load balancing for the backend and frontend services.
+ Requests to /backend are directed to the backend service on port 8080.
+Requests to the root path / are directed to the frontend service on port 3000.
+ Annotations provide additional configuration details, specifying the ALB's scheme, target type, and listen ports. The Ingress is associated with the alb Ingress class. This configuration enables external access and load balancing for the backend and frontend services.
  1. **`k8s_manifests/mongo/deploy.yaml`**
   This Kubernetes Deployment YAML file configures the deployment of a MongoDB instance within the workshop namespace. It orchestrates a single replica of a containerized MongoDB using the official `mongo:4.4.6` image. Key configurations include:
 
-     **Container Configuration:**
+ **Container Configuration:**
 
-     - Image: `MongoDB version 4.4.6.`
-    Command: Utilizes numactl for memory management and sets MongoDB parameters.
-    Ports: Exposes port 27017 for MongoDB connections.
-    Resource Limits: Specifies resource requests and limits for memory and CPU usage.
-    Environment Variables: Retrieves MongoDB root username and password from a Kubernetes Secret (`mongo-sec`).
-    Replicas: Ensures a single MongoDB replica.
+  - Image: `MongoDB version 4.4.6.`
+Command: Utilizes numactl for memory management and sets MongoDB parameters.
+Ports: Exposes port 27017 for MongoDB connections.
+Resource Limits: Specifies resource requests and limits for memory and CPU usage.
+Environment Variables: Retrieves MongoDB root username and password from a Kubernetes Secret (`mongo-sec`).
+Replicas: Ensures a single MongoDB replica.
 
-    - Storage Configuration (commented out): Volume-related configurations (persistent volume claims and mounts) are currently commented out. Uncommenting these sections would enable persistent storage for MongoDB data.
+  - Storage Configuration (commented out): Volume-related configurations (persistent volume claims and mounts) are currently commented out. Uncommenting these sections would enable persistent storage for MongoDB data.
 
-     - This Deployment is designed for MongoDB deployment with resource constraints and can be applied to a Kubernetes cluster using
-       ```bash
-       kubectl apply -f mongodb-deployment.yaml.
-       ```
+  - This Deployment is designed for MongoDB deployment with resource constraints and can be applied to a Kubernetes cluster using
+```bash
+kubectl apply -f mongodb-deployment.yaml.
+```
 
 1. **`k8s_manifests/mongo/secrets.yaml`**
   This Kubernetes Secret YAML file defines a secret named mongo-sec within the workshop namespace. It is of type Opaque, indicating generic, arbitrary data. This secret contains sensitive information, specifically:
 
-    - **Username:** The Base64-encoded value for 'admin'.
-    - **Password:** The Base64-encoded value for 'password123'.
-    This secret is intended for use with other Kubernetes resources, such as Deployments, allowing secure storage and retrieval of sensitive data, in this case, MongoDB root username and password. The values can be decoded from Base64 when needed.
+ **Username:** The Base64-encoded value for 'admin'.
+**Password:** The Base64-encoded value for 'password123'.
+This secret is intended for use with other Kubernetes resources, such as Deployments, allowing secure storage and retrieval of sensitive data, in this case, MongoDB root username and password. The values can be decoded from Base64 when needed.
 1. **`k8s_manifests/mongo/service.yaml`**
 This Kubernetes Service YAML file defines a service named mongodb-svc within the workshop namespace. It exposes a MongoDB instance to other services within the cluster. Key configurations include:
 
-    - Selector: Identifies pods to include in the service using the label app: mongodb.
-    - Ports: Maps port 27017 on the service to the same port on the target pods. The service is accessible internally within the cluster on this port.
-    - This service allows other components in the same namespace to connect to the MongoDB instance using the service name (`mongodb-svc`) and port (`27017`). It facilitates communication between different parts of the application stack.
+ **Selector:** Identifies pods to include in the service using the label app: mongodb.
+Ports: Maps port 27017 on the service to the same port on the target pods. The service is accessible internally within the cluster on this port.
+This service allows other components in the same namespace to connect to the MongoDB instance using the service name (`mongodb-svc`) and port (`27017`). It facilitates communication between different parts of the application stack.
+## Deployment
+This section outlines the deployment process for the application, covering distinct phases from the initial setup of infrastructure components, such as EC2 instances and IAM users, to building frontend and backend images, Kubernetes deployment, setting up an Application Load Balancer (ALB) with Ingress, and concluding with a streamlined cleanup process in Phase 5. Each phase is designed to contribute to the overall deployment and management of the application stack.
+
+### 1. AWS setup
+- You should create a user in AWS with CLI access from the AWS Management Console by following these steps. Begin by navigating to the **IAM** (Identity and Access Management) service in the AWS Console. Choose "Users" from the left-hand menu, and then click on the "Add user" button. Specify a username, select **Programmatic access** for CLI access, and proceed to set permissions. You should  attach existing policies that grant necessary permissions. After configuring permissions. Finally, click "Create user." AWS will provide you with access key credentials that you should securely store.
+- create an EC2 instance on AWS from the console and connect to it via SSH, start by navigating to the EC2 service. Once the instance is running, select it from the EC2 dashboard, and click "Connect." Follow the provided SSH connection command to connect to the instance. Once connected, make a directory using the `mkdir` command and clone the repository using in the newly created directory.
+```bash
+git clone https://github.com/ahmd7/docker-k8s-project.git
+```
+- set up the AWS CLI, a tool facilitating interaction with AWS services through commands, follow these steps:
+  
+  1. Install AWS CLI using the following commands:
+    ```bash
+    apt install aws-cli --classic
+    ```
+  2. Configure AWS CLI by running:
+    ```bash
+    aws configure
+    ```
+    You will be prompted for access and secret keys; retrieve them from the CSV file downloaded earlier.
+
+  3. Keep all other configurations unchanged and press enter. Your AWS CLI is now set up.
+
+    Next, proceed to set up Docker:
+
+
+    Install Docker with the following commands:
+    
+    ```bash
+    apt install docker.io
+    usermod -aG docker $USER  # Replace with your username (e.g., 'ubuntu')
+    newgrp docker
+    sudo chmod 777 /var/run/docker.sock
+    which docker
+    ```
+  Finally, setup kubectl:
+  1. Set up kubectl, a command-line tool for managing Kubernetes clusters:
+  ```bash
+  apt install kubectl --classic
+  ```
+  2. Set up eksctl, a command-line tool for managing Amazon EKS clusters:
+  ```bash
+  curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+  sudo mv /tmp/eksctl /usr/local/bin
+  eksctl version
+  ```
+-  Build Frontend and Backend Images
+
+    #### Step 1: Setup Elastic Container Registry (ECR)
+
+   1. In the AWS console, search for ECR and create repositories for both frontend and backend. Set visibility to public.
+
+    #### Step 2: Setup Frontend
+
+    1. Navigate to the frontend directory in the terminal and run `ls` to ensure you are in the correct directory.
+
+    2. Go to your ECR repo and click on "View push commands."
+
+    3. Run the following commands in your terminal to build the frontend image and push it to the ECR repository:
+
+   ```bash
+   aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/l0l7e4u1
+   docker build -t 3-tier-frontend .
+   docker tag 3-tier-frontend:latest public.ecr.aws/l0l7e4u1/3-tier-frontend:latest
+   docker push public.ecr.aws/l0l7e4u1/3-tier-frontend:latest
+   ```
+   
+   Run a container from the image:
+
+    ```bash
+    docker images  # copy the image name from the list
+    docker run -d -p 3000:3000 <image-name>:latest
+    Access your application at public-ip:3000.
+    ```
+#### Step 3: Setup Backend
+    
+    Navigate to the backend directory in the terminal.
+
+    Go to your ECR repo and click on "View push commands" for the backend repo.
+
+    Run the following commands in your terminal to build the backend image and push it to the ECR repository:
+
+```bash
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/l0l7e4u1
+docker build -t 3-tier-backend .
+docker tag 3-tier-backend:latest public.ecr.aws/l0l7e4u1/3-tier-backend:latest
+docker push public.ecr.aws/l0l7e4u1/3-tier-backend:latest
+```
+Your backend image is now successfully built and pushed to the Elastic Container Registry, which will be utilized when setting up the Elastic Kubernetes Service.
+
+
+
+
+
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
